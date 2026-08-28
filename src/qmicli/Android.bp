@@ -1,0 +1,68 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+cc_library_static {
+    name: "libhelpers",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_libqmi_glib_dep_defaults",
+    ],
+    header_libs: ["libqmi_top_headers"],
+    srcs: ["qmicli-helpers.c"],
+}
+
+cc_defaults {
+    name: "libhelpers_dep_defaults",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_libqmi_glib_dep_defaults",
+    ],
+    header_libs: ["libhelpers_dep_headers"],
+    static_libs: ["libhelpers"],
+}
+
+cc_library_headers {
+    name: "libhelpers_dep_headers",
+    export_include_dirs: ["."],
+    vendor_available: true,
+}
+
+local_sources = [
+    "qmicli.c",
+    "qmicli-atr.c",
+    "qmicli-dms.c",
+    "qmicli-dpm.c",
+    "qmicli-dsd.c",
+    "qmicli-ims.c",
+    "qmicli-imsa.c",
+    "qmicli-imsp.c",
+    "qmicli-fox.c",
+    "qmicli-gas.c",
+    "qmicli-gms.c",
+    "qmicli-link-management.c",
+    "qmicli-loc.c",
+    "qmicli-nas.c",
+    "qmicli-pbm.c",
+    "qmicli-pdc.c",
+    "qmicli-qmiwwan.c",
+    "qmicli-qos.c",
+    "qmicli-sar.c",
+    "qmicli-uim.c",
+    "qmicli-voice.c",
+    "qmicli-wda.c",
+    "qmicli-wds.c",
+    "qmicli-wms.c",
+]
+
+local_deps = ["libhelpers_dep_defaults"]
+
+cc_binary {
+    name: "qmicli",
+    defaults: [
+        "libhelpers_dep_defaults",
+        "libqmi_defaults",
+        "libqmi_glib_dep_defaults",
+    ],
+    srcs: local_sources,
+    header_libs: ["libqmi_top_headers"],
+}

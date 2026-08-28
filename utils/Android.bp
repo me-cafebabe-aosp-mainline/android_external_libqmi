@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+local_cflags = [
+    "-Wno-empty-body",
+    "-Wno-sign-compare",
+    "-Wno-switch-default",
+]
+
+cc_binary {
+    name: "swi-update",
+    defaults: [
+        "libqmi_defaults",
+    ],
+    srcs: ["swi-update.c"],
+    cflags: local_cflags,
+}
+
+genrule {
+    name: "gen-qmi-network",
+    srcs: ["qmi-network.in"],
+    out: ["qmi-network"],
+    tool_files: ["qmi-network.sed"],
+    cmd: "sed -f $(location qmi-network.sed) $(in) > $(out)",
+}
+
+sh_binary {
+    name: "qmi-network",
+    src: ":gen-qmi-network",
+    vendor: true,
+}

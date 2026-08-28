@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+cc_binary {
+    name: "qmi-proxy",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_libqmi_glib_dep_defaults",
+    ],
+    srcs: ["qmi-proxy.c"],
+    header_libs: ["libqmi_top_headers"],
+}

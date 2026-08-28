@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+package {
+    default_applicable_licenses: ["external_libqmi_license"],
+}
+
+license {
+    name: "external_libqmi_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-GPL-2.0",
+    ],
+    license_text: [
+        "COPYING",
+    ],
+}
+
+// TODO: Bring in mbim-glib and wire it up
+
+cc_defaults {
+    name: "libqmi_defaults",
+    cflags: [
+        "-DHAVE_CONFIG_H",
+        "-Wno-cast-function-type",
+        "-Wno-deprecated-declarations",
+        "-Wno-packed",
+        "-Wno-unused-parameter",
+    ],
+    header_libs: [
+        "libqmi_config_header",
+    ],
+    vendor_available: true,
+}
+
+cc_defaults {
+    name: "libqmi_glib_dep_defaults",
+    shared_libs: [
+        "libglib-2.0",
+    ],
+}
+
+cc_defaults {
+    name: "libqmi_glib_deps_defaults",
+    defaults: ["libqmi_glib_dep_defaults"],
+    cflags: [
+        "-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_56",
+        "-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_56",
+        "-DGLIB_DISABLE_DEPRECATION_WARNINGS",
+    ],
+    shared_libs: [
+        "libgio-2.0",
+        "libgobject-2.0",
+    ],
+}
+
+cc_library_headers {
+    name: "libqmi_top_headers",
+    vendor_available: true,
+    export_include_dirs: [
+        ".",
+    ],
+}
+
+cc_library_headers {
+    name: "libqmi_config_header",
+    vendor_available: true,
+    export_include_dirs: [
+        "android/config",
+    ],
+}

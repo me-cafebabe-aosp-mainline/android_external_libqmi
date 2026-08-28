@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+cc_library_static {
+    name: "libqmi-common",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_glib_deps_defaults",
+    ],
+    header_libs: ["libqmi_top_headers"],
+    srcs: ["qmi-common.c"],
+}
+
+cc_defaults {
+    name: "libqmi_common_dep_defaults",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_glib_deps_defaults",
+    ],
+    header_libs: ["libqmi_common_dep_headers"],
+    static_libs: ["libqmi-common"],
+}
+
+cc_library_headers {
+    name: "libqmi_common_dep_headers",
+    export_include_dirs: ["."],
+    vendor_available: true,
+}
