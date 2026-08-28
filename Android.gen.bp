@@ -183,7 +183,7 @@ genrule {
     name: "gen_qmi_enum_types_private_h",
     srcs: [
         ":qmi_enums_private_header",
-        "build-aux/templates/qmi-enum-types-private.h.template",
+        "build-aux/templates/qmi-enum-types-nodoc.h.template",
     ],
     tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types-private.h"],
@@ -192,7 +192,7 @@ genrule {
          "--fhead '#ifndef __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__\\n" +
          "#define __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__\\n" +
          "#include \"qmi-enums-private.h\"\\n' " +
-         "--template $(location build-aux/templates/qmi-enum-types-private.h.template) " +
+         "--template $(location build-aux/templates/qmi-enum-types-nodoc.h.template) " +
          "--ftail '#endif /* __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__ */\\n' " +
          "$(in) > $(out)",
 }
@@ -201,14 +201,14 @@ genrule {
     name: "gen_qmi_enum_types_private_c",
     srcs: [
         ":qmi_enums_private_header",
-        "build-aux/templates/qmi-enum-types-private.c.template",
+        "build-aux/templates/qmi-enum-types.c.template",
     ],
     tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types-private.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--enums-only " +
          "--fhead '#include \"qmi-enum-types-private.h\"\\n' " +
-         "--template $(location build-aux/templates/qmi-enum-types-private.c.template) " +
+         "--template $(location build-aux/templates/qmi-enum-types.c.template) " +
          "$(in) > $(out)",
 }
 
@@ -216,7 +216,7 @@ genrule {
     name: "gen_qmi_flag_types_private_h",
     srcs: [
         ":qmi_enums_private_header",
-        "build-aux/templates/qmi-flag-types-private.h.template",
+        "build-aux/templates/qmi-flag-types-nodoc.h.template",
     ],
     tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types-private.h"],
@@ -225,7 +225,7 @@ genrule {
          "--fhead '#ifndef __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__\\n" +
          "#define __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__\\n" +
          "#include \"qmi-enums-private.h\"\\n' " +
-         "--template $(location build-aux/templates/qmi-flag-types-private.h.template) " +
+         "--template $(location build-aux/templates/qmi-flag-types-nodoc.h.template) " +
          "--ftail '#endif /* __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__ */\\n' " +
          "$(in) > $(out)",
 }
@@ -234,14 +234,14 @@ genrule {
     name: "gen_qmi_flag_types_private_c",
     srcs: [
         ":qmi_enums_private_header",
-        "build-aux/templates/qmi-flag-types-private.c.template",
+        "build-aux/templates/qmi-flag-types.c.template",
     ],
     tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types-private.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--flags-only " +
          "--fhead '#include \"qmi-flag-types-private.h\"\\n' " +
-         "--template $(location build-aux/templates/qmi-flag-types-private.c.template) " +
+         "--template $(location build-aux/templates/qmi-flag-types.c.template) " +
          "$(in) > $(out)",
 }
 
