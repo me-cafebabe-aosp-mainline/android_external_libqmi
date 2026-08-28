@@ -1,0 +1,779 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Auto-generated code build rules for libqmi-glib
+
+codegen_tool_files = [
+    "build-aux/qmi-codegen/qmi-codegen",
+    "build-aux/qmi-codegen/Client.py",
+    "build-aux/qmi-codegen/Container.py",
+    "build-aux/qmi-codegen/Field.py",
+    "build-aux/qmi-codegen/FieldResult.py",
+    "build-aux/qmi-codegen/Message.py",
+    "build-aux/qmi-codegen/MessageList.py",
+    "build-aux/qmi-codegen/TypeFactory.py",
+    "build-aux/qmi-codegen/utils.py",
+    "build-aux/qmi-codegen/Variable.py",
+    "build-aux/qmi-codegen/VariableArray.py",
+    "build-aux/qmi-codegen/VariableFactory.py",
+    "build-aux/qmi-codegen/VariableInteger.py",
+    "build-aux/qmi-codegen/VariableSequence.py",
+    "build-aux/qmi-codegen/VariableString.py",
+    "build-aux/qmi-codegen/VariableStruct.py",
+]
+
+// ---------------------------------------------------------------------------
+// qmi-mkenums generated files
+// ---------------------------------------------------------------------------
+
+genrule {
+    name: "gen_qmi_error_types_h",
+    srcs: [":qmi_errors_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-error-types.h.template",
+    ],
+    out: ["qmi-error-types.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--fhead '#ifndef __LIBQMI_GLIB_ERROR_TYPES_H__\\n" +
+         "#define __LIBQMI_GLIB_ERROR_TYPES_H__\\n" +
+         "#include \"qmi-errors.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-error-types.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_ERROR_TYPES_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_error_types_c",
+    srcs: [":qmi_errors_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-error-types.c.template",
+    ],
+    out: ["qmi-error-types.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--fhead '#include \"qmi-errors.h\"\\n" +
+         "#include \"qmi-error-types.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-error-types.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_error_quarks_c",
+    srcs: [":qmi_errors_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-error-quarks.c.template",
+    ],
+    out: ["qmi-error-quarks.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--fhead '#include \"qmi-errors.h\"\\n" +
+         "#include \"qmi-error-types.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-error-quarks.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_enum_types_h",
+    srcs: [":qmi_enums_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-enum-types.h.template",
+    ],
+    out: ["qmi-enum-types.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--enums-only " +
+         "--fhead '#ifndef __LIBQMI_GLIB_ENUM_TYPES_H__\\n" +
+         "#define __LIBQMI_GLIB_ENUM_TYPES_H__\\n" +
+         "#include \"qmi-enums.h\"\\n" +
+         "#include \"qmi-enums-wds.h\"\\n" +
+         "#include \"qmi-enums-dms.h\"\\n" +
+         "#include \"qmi-enums-nas.h\"\\n" +
+         "#include \"qmi-enums-wms.h\"\\n" +
+         "#include \"qmi-enums-pds.h\"\\n" +
+         "#include \"qmi-enums-pdc.h\"\\n" +
+         "#include \"qmi-enums-pbm.h\"\\n" +
+         "#include \"qmi-enums-uim.h\"\\n" +
+         "#include \"qmi-enums-sar.h\"\\n" +
+         "#include \"qmi-enums-oma.h\"\\n" +
+         "#include \"qmi-enums-wda.h\"\\n" +
+         "#include \"qmi-enums-voice.h\"\\n" +
+         "#include \"qmi-enums-loc.h\"\\n" +
+         "#include \"qmi-enums-qos.h\"\\n" +
+         "#include \"qmi-enums-gas.h\"\\n" +
+         "#include \"qmi-enums-dsd.h\"\\n" +
+         "#include \"qmi-enums-fox.h\"\\n" +
+         "#include \"qmi-enums-ims.h\"\\n" +
+         "#include \"qmi-enums-imsp.h\"\\n" +
+         "#include \"qmi-enums-imsa.h\"\\n" +
+         "#include \"qmi-enums-imsdcm.h\"\\n" +
+         "#include \"qmi-enums-ssc.h\"\\n" +
+         "#include \"qmi-device.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-enum-types.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_ENUM_TYPES_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_enum_types_c",
+    srcs: [":qmi_enums_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-enum-types.c.template",
+    ],
+    out: ["qmi-enum-types.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--enums-only " +
+         "--fhead '#include \"qmi-enum-types.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-enum-types.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flag_types_h",
+    srcs: [":qmi_enums_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flag-types.h.template",
+    ],
+    out: ["qmi-flag-types.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--flags-only " +
+         "--fhead '#ifndef __LIBQMI_GLIB_FLAG_TYPES_H__\\n" +
+         "#define __LIBQMI_GLIB_FLAG_TYPES_H__\\n" +
+         "#include \"qmi-enums.h\"\\n" +
+         "#include \"qmi-enums-wds.h\"\\n" +
+         "#include \"qmi-enums-dms.h\"\\n" +
+         "#include \"qmi-enums-nas.h\"\\n" +
+         "#include \"qmi-enums-wms.h\"\\n" +
+         "#include \"qmi-enums-pds.h\"\\n" +
+         "#include \"qmi-enums-pdc.h\"\\n" +
+         "#include \"qmi-enums-pbm.h\"\\n" +
+         "#include \"qmi-enums-uim.h\"\\n" +
+         "#include \"qmi-enums-sar.h\"\\n" +
+         "#include \"qmi-enums-oma.h\"\\n" +
+         "#include \"qmi-enums-wda.h\"\\n" +
+         "#include \"qmi-enums-voice.h\"\\n" +
+         "#include \"qmi-enums-loc.h\"\\n" +
+         "#include \"qmi-enums-qos.h\"\\n" +
+         "#include \"qmi-enums-gas.h\"\\n" +
+         "#include \"qmi-enums-dsd.h\"\\n" +
+         "#include \"qmi-enums-fox.h\"\\n" +
+         "#include \"qmi-enums-ssc.h\"\\n" +
+         "#include \"qmi-device.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flag-types.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_FLAG_TYPES_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flag_types_c",
+    srcs: [":qmi_enums_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flag-types.c.template",
+    ],
+    out: ["qmi-flag-types.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--flags-only " +
+         "--fhead '#include \"qmi-flag-types.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flag-types.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_enum_types_private_h",
+    srcs: [":qmi_enums_private_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-enum-types-private.h.template",
+    ],
+    out: ["qmi-enum-types-private.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--enums-only " +
+         "--fhead '#ifndef __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__\\n" +
+         "#define __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__\\n" +
+         "#include \"qmi-enums-private.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-enum-types-private.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_ENUM_TYPES_PRIVATE_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_enum_types_private_c",
+    srcs: [":qmi_enums_private_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-enum-types-private.c.template",
+    ],
+    out: ["qmi-enum-types-private.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--enums-only " +
+         "--fhead '#include \"qmi-enum-types-private.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-enum-types-private.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flag_types_private_h",
+    srcs: [":qmi_enums_private_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flag-types-private.h.template",
+    ],
+    out: ["qmi-flag-types-private.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--flags-only " +
+         "--fhead '#ifndef __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__\\n" +
+         "#define __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__\\n" +
+         "#include \"qmi-enums-private.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flag-types-private.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_FLAG_TYPES_PRIVATE_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flag_types_private_c",
+    srcs: [":qmi_enums_private_header"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flag-types-private.c.template",
+    ],
+    out: ["qmi-flag-types-private.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--flags-only " +
+         "--fhead '#include \"qmi-flag-types-private.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flag-types-private.c.template) " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flags64_types_h",
+    srcs: [":qmi_flags64_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flags64-types.h.template",
+    ],
+    out: ["qmi-flags64-types.h"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--fhead '#ifndef __LIBQMI_GLIB_FLAGS64_TYPES_H__\\n" +
+         "#define __LIBQMI_GLIB_FLAGS64_TYPES_H__\\n" +
+         "#include \"qmi-flags64-dms.h\"\\n" +
+         "#include \"qmi-flags64-nas.h\"\\n" +
+         "#include \"qmi-flags64-loc.h\"\\n" +
+         "#include \"qmi-flags64-dsd.h\"\\n" +
+         "#include \"qmi-flags64-wds.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flags64-types.h.template) " +
+         "--ftail '#endif /* __LIBQMI_GLIB_FLAGS64_TYPES_H__ */\\n' " +
+         "$(in) > $(out)",
+}
+
+genrule {
+    name: "gen_qmi_flags64_types_c",
+    srcs: [":qmi_flags64_headers"],
+    tool_files: [
+        "build-aux/qmi-mkenums",
+        "build-aux/templates/qmi-flags64-types.c.template",
+    ],
+    out: ["qmi-flags64-types.c"],
+    cmd: "python3 $(location build-aux/qmi-mkenums) " +
+         "--fhead '#include \"qmi-flags64-types.h\"\\n' " +
+         "--template $(location build-aux/templates/qmi-flags64-types.c.template) " +
+         "$(in) > $(out)",
+}
+
+// ---------------------------------------------------------------------------
+// qmi-codegen generated files
+// ---------------------------------------------------------------------------
+
+genrule {
+    name: "gen_qmi_ctl",
+    srcs: [
+        "data/qmi-service-ctl.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-ctl.c",
+        "qmi-ctl.h",
+        "qmi-ctl.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ctl.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ctl",
+}
+
+genrule {
+    name: "gen_qmi_atr",
+    srcs: [
+        "data/qmi-service-atr.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-atr.c",
+        "qmi-atr.h",
+        "qmi-atr.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-atr.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-atr",
+}
+
+genrule {
+    name: "gen_qmi_dms",
+    srcs: [
+        "data/qmi-service-dms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-dms.c",
+        "qmi-dms.h",
+        "qmi-dms.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dms",
+}
+
+genrule {
+    name: "gen_qmi_dpm",
+    srcs: [
+        "data/qmi-service-dpm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-dpm.c",
+        "qmi-dpm.h",
+        "qmi-dpm.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dpm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dpm",
+}
+
+genrule {
+    name: "gen_qmi_dsd",
+    srcs: [
+        "data/qmi-service-dsd.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-dsd.c",
+        "qmi-dsd.h",
+        "qmi-dsd.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dsd.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dsd",
+}
+
+genrule {
+    name: "gen_qmi_ims",
+    srcs: [
+        "data/qmi-service-ims.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-ims.c",
+        "qmi-ims.h",
+        "qmi-ims.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ims.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ims",
+}
+
+genrule {
+    name: "gen_qmi_imsa",
+    srcs: [
+        "data/qmi-service-imsa.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-imsa.c",
+        "qmi-imsa.h",
+        "qmi-imsa.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsa.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsa",
+}
+
+genrule {
+    name: "gen_qmi_imsp",
+    srcs: [
+        "data/qmi-service-imsp.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-imsp.c",
+        "qmi-imsp.h",
+        "qmi-imsp.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsp.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsp",
+}
+
+genrule {
+    name: "gen_qmi_imsdcm",
+    srcs: [
+        "data/qmi-service-imsdcm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-imsdcm.c",
+        "qmi-imsdcm.h",
+        "qmi-imsdcm.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsdcm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsdcm",
+}
+
+genrule {
+    name: "gen_qmi_fox",
+    srcs: [
+        "data/qmi-service-fox.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-fox.c",
+        "qmi-fox.h",
+        "qmi-fox.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-fox.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-fox",
+}
+
+genrule {
+    name: "gen_qmi_gas",
+    srcs: [
+        "data/qmi-service-gas.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-gas.c",
+        "qmi-gas.h",
+        "qmi-gas.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-gas.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-gas",
+}
+
+genrule {
+    name: "gen_qmi_gms",
+    srcs: [
+        "data/qmi-service-gms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-gms.c",
+        "qmi-gms.h",
+        "qmi-gms.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-gms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-gms",
+}
+
+genrule {
+    name: "gen_qmi_loc",
+    srcs: [
+        "data/qmi-service-loc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-loc.c",
+        "qmi-loc.h",
+        "qmi-loc.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-loc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-loc",
+}
+
+genrule {
+    name: "gen_qmi_nas",
+    srcs: [
+        "data/qmi-service-nas.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-nas.c",
+        "qmi-nas.h",
+        "qmi-nas.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-nas.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-nas",
+}
+
+genrule {
+    name: "gen_qmi_oma",
+    srcs: [
+        "data/qmi-service-oma.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-oma.c",
+        "qmi-oma.h",
+        "qmi-oma.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-oma.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-oma",
+}
+
+genrule {
+    name: "gen_qmi_pbm",
+    srcs: [
+        "data/qmi-service-pbm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-pbm.c",
+        "qmi-pbm.h",
+        "qmi-pbm.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pbm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pbm",
+}
+
+genrule {
+    name: "gen_qmi_pdc",
+    srcs: [
+        "data/qmi-service-pdc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-pdc.c",
+        "qmi-pdc.h",
+        "qmi-pdc.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pdc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pdc",
+}
+
+genrule {
+    name: "gen_qmi_pds",
+    srcs: [
+        "data/qmi-service-pds.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-pds.c",
+        "qmi-pds.h",
+        "qmi-pds.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pds.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pds",
+}
+
+genrule {
+    name: "gen_qmi_qos",
+    srcs: [
+        "data/qmi-service-qos.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-qos.c",
+        "qmi-qos.h",
+        "qmi-qos.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-qos.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-qos",
+}
+
+genrule {
+    name: "gen_qmi_sar",
+    srcs: [
+        "data/qmi-service-sar.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-sar.c",
+        "qmi-sar.h",
+        "qmi-sar.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-sar.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-sar",
+}
+
+genrule {
+    name: "gen_qmi_ssc",
+    srcs: [
+        "data/qmi-service-ssc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-ssc.c",
+        "qmi-ssc.h",
+        "qmi-ssc.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ssc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ssc",
+}
+
+genrule {
+    name: "gen_qmi_uim",
+    srcs: [
+        "data/qmi-service-uim.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-uim.c",
+        "qmi-uim.h",
+        "qmi-uim.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-uim.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-uim",
+}
+
+genrule {
+    name: "gen_qmi_voice",
+    srcs: [
+        "data/qmi-service-voice.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-voice.c",
+        "qmi-voice.h",
+        "qmi-voice.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-voice.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-voice",
+}
+
+genrule {
+    name: "gen_qmi_wda",
+    srcs: [
+        "data/qmi-service-wda.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-wda.c",
+        "qmi-wda.h",
+        "qmi-wda.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wda.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wda",
+}
+
+genrule {
+    name: "gen_qmi_wds",
+    srcs: [
+        "data/qmi-service-wds.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-wds.c",
+        "qmi-wds.h",
+        "qmi-wds.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wds.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wds",
+}
+
+genrule {
+    name: "gen_qmi_wms",
+    srcs: [
+        "data/qmi-service-wms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: [
+        "qmi-wms.c",
+        "qmi-wms.h",
+        "qmi-wms.md",
+    ],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wms",
+}

@@ -18,6 +18,8 @@ license {
 
 // TODO: Bring in mbim-glib and wire it up
 
+build = ["Android.gen.bp"]
+
 cc_defaults {
     name: "libqmi_defaults",
     cflags: [
