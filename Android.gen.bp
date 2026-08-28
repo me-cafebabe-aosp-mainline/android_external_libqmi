@@ -282,498 +282,841 @@ genrule {
 
 // ---------------------------------------------------------------------------
 // qmi-codegen generated files
+//
+// qmi-codegen writes 3 files per service (.c, .h, .md) in a single invocation.
+// Soong's generated_sources rejects .h files and unknown extensions (.md), so
+// each service is split into two genrules: one producing only .c (deleting .h/.md)
+// and one producing only .h (deleting .c/.md). The .md files (docs) are discarded.
 // ---------------------------------------------------------------------------
 
 genrule {
-    name: "gen_qmi_ctl",
+    name: "gen_qmi_ctl_c",
     srcs: [
         "data/qmi-service-ctl.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-ctl.c",
-        "qmi-ctl.h",
-        "qmi-ctl.md",
-    ],
+    out: ["qmi-ctl.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-ctl.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-ctl",
+         "--output $(genDir)/qmi-ctl && " +
+         "rm -f $(genDir)/qmi-ctl.h $(genDir)/qmi-ctl.md",
 }
 
 genrule {
-    name: "gen_qmi_atr",
+    name: "gen_qmi_ctl_h",
+    srcs: [
+        "data/qmi-service-ctl.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-ctl.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ctl.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ctl && " +
+         "rm -f $(genDir)/qmi-ctl.c $(genDir)/qmi-ctl.md",
+}
+
+genrule {
+    name: "gen_qmi_atr_c",
     srcs: [
         "data/qmi-service-atr.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-atr.c",
-        "qmi-atr.h",
-        "qmi-atr.md",
-    ],
+    out: ["qmi-atr.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-atr.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-atr",
+         "--output $(genDir)/qmi-atr && " +
+         "rm -f $(genDir)/qmi-atr.h $(genDir)/qmi-atr.md",
 }
 
 genrule {
-    name: "gen_qmi_dms",
+    name: "gen_qmi_atr_h",
+    srcs: [
+        "data/qmi-service-atr.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-atr.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-atr.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-atr && " +
+         "rm -f $(genDir)/qmi-atr.c $(genDir)/qmi-atr.md",
+}
+
+genrule {
+    name: "gen_qmi_dms_c",
     srcs: [
         "data/qmi-service-dms.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-dms.c",
-        "qmi-dms.h",
-        "qmi-dms.md",
-    ],
+    out: ["qmi-dms.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-dms.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-dms",
+         "--output $(genDir)/qmi-dms && " +
+         "rm -f $(genDir)/qmi-dms.h $(genDir)/qmi-dms.md",
 }
 
 genrule {
-    name: "gen_qmi_dpm",
+    name: "gen_qmi_dms_h",
+    srcs: [
+        "data/qmi-service-dms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-dms.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dms && " +
+         "rm -f $(genDir)/qmi-dms.c $(genDir)/qmi-dms.md",
+}
+
+genrule {
+    name: "gen_qmi_dpm_c",
     srcs: [
         "data/qmi-service-dpm.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-dpm.c",
-        "qmi-dpm.h",
-        "qmi-dpm.md",
-    ],
+    out: ["qmi-dpm.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-dpm.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-dpm",
+         "--output $(genDir)/qmi-dpm && " +
+         "rm -f $(genDir)/qmi-dpm.h $(genDir)/qmi-dpm.md",
 }
 
 genrule {
-    name: "gen_qmi_dsd",
+    name: "gen_qmi_dpm_h",
+    srcs: [
+        "data/qmi-service-dpm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-dpm.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dpm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dpm && " +
+         "rm -f $(genDir)/qmi-dpm.c $(genDir)/qmi-dpm.md",
+}
+
+genrule {
+    name: "gen_qmi_dsd_c",
     srcs: [
         "data/qmi-service-dsd.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-dsd.c",
-        "qmi-dsd.h",
-        "qmi-dsd.md",
-    ],
+    out: ["qmi-dsd.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-dsd.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-dsd",
+         "--output $(genDir)/qmi-dsd && " +
+         "rm -f $(genDir)/qmi-dsd.h $(genDir)/qmi-dsd.md",
 }
 
 genrule {
-    name: "gen_qmi_ims",
+    name: "gen_qmi_dsd_h",
+    srcs: [
+        "data/qmi-service-dsd.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-dsd.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-dsd.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-dsd && " +
+         "rm -f $(genDir)/qmi-dsd.c $(genDir)/qmi-dsd.md",
+}
+
+genrule {
+    name: "gen_qmi_ims_c",
     srcs: [
         "data/qmi-service-ims.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-ims.c",
-        "qmi-ims.h",
-        "qmi-ims.md",
-    ],
+    out: ["qmi-ims.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-ims.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-ims",
+         "--output $(genDir)/qmi-ims && " +
+         "rm -f $(genDir)/qmi-ims.h $(genDir)/qmi-ims.md",
 }
 
 genrule {
-    name: "gen_qmi_imsa",
+    name: "gen_qmi_ims_h",
+    srcs: [
+        "data/qmi-service-ims.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-ims.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ims.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ims && " +
+         "rm -f $(genDir)/qmi-ims.c $(genDir)/qmi-ims.md",
+}
+
+genrule {
+    name: "gen_qmi_imsa_c",
     srcs: [
         "data/qmi-service-imsa.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-imsa.c",
-        "qmi-imsa.h",
-        "qmi-imsa.md",
-    ],
+    out: ["qmi-imsa.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-imsa.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-imsa",
+         "--output $(genDir)/qmi-imsa && " +
+         "rm -f $(genDir)/qmi-imsa.h $(genDir)/qmi-imsa.md",
 }
 
 genrule {
-    name: "gen_qmi_imsp",
+    name: "gen_qmi_imsa_h",
+    srcs: [
+        "data/qmi-service-imsa.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-imsa.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsa.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsa && " +
+         "rm -f $(genDir)/qmi-imsa.c $(genDir)/qmi-imsa.md",
+}
+
+genrule {
+    name: "gen_qmi_imsp_c",
     srcs: [
         "data/qmi-service-imsp.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-imsp.c",
-        "qmi-imsp.h",
-        "qmi-imsp.md",
-    ],
+    out: ["qmi-imsp.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-imsp.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-imsp",
+         "--output $(genDir)/qmi-imsp && " +
+         "rm -f $(genDir)/qmi-imsp.h $(genDir)/qmi-imsp.md",
 }
 
 genrule {
-    name: "gen_qmi_imsdcm",
+    name: "gen_qmi_imsp_h",
+    srcs: [
+        "data/qmi-service-imsp.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-imsp.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsp.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsp && " +
+         "rm -f $(genDir)/qmi-imsp.c $(genDir)/qmi-imsp.md",
+}
+
+genrule {
+    name: "gen_qmi_imsdcm_c",
     srcs: [
         "data/qmi-service-imsdcm.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-imsdcm.c",
-        "qmi-imsdcm.h",
-        "qmi-imsdcm.md",
-    ],
+    out: ["qmi-imsdcm.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-imsdcm.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-imsdcm",
+         "--output $(genDir)/qmi-imsdcm && " +
+         "rm -f $(genDir)/qmi-imsdcm.h $(genDir)/qmi-imsdcm.md",
 }
 
 genrule {
-    name: "gen_qmi_fox",
+    name: "gen_qmi_imsdcm_h",
+    srcs: [
+        "data/qmi-service-imsdcm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-imsdcm.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-imsdcm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-imsdcm && " +
+         "rm -f $(genDir)/qmi-imsdcm.c $(genDir)/qmi-imsdcm.md",
+}
+
+genrule {
+    name: "gen_qmi_fox_c",
     srcs: [
         "data/qmi-service-fox.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-fox.c",
-        "qmi-fox.h",
-        "qmi-fox.md",
-    ],
+    out: ["qmi-fox.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-fox.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-fox",
+         "--output $(genDir)/qmi-fox && " +
+         "rm -f $(genDir)/qmi-fox.h $(genDir)/qmi-fox.md",
 }
 
 genrule {
-    name: "gen_qmi_gas",
+    name: "gen_qmi_fox_h",
+    srcs: [
+        "data/qmi-service-fox.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-fox.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-fox.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-fox && " +
+         "rm -f $(genDir)/qmi-fox.c $(genDir)/qmi-fox.md",
+}
+
+genrule {
+    name: "gen_qmi_gas_c",
     srcs: [
         "data/qmi-service-gas.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-gas.c",
-        "qmi-gas.h",
-        "qmi-gas.md",
-    ],
+    out: ["qmi-gas.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-gas.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-gas",
+         "--output $(genDir)/qmi-gas && " +
+         "rm -f $(genDir)/qmi-gas.h $(genDir)/qmi-gas.md",
 }
 
 genrule {
-    name: "gen_qmi_gms",
+    name: "gen_qmi_gas_h",
+    srcs: [
+        "data/qmi-service-gas.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-gas.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-gas.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-gas && " +
+         "rm -f $(genDir)/qmi-gas.c $(genDir)/qmi-gas.md",
+}
+
+genrule {
+    name: "gen_qmi_gms_c",
     srcs: [
         "data/qmi-service-gms.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-gms.c",
-        "qmi-gms.h",
-        "qmi-gms.md",
-    ],
+    out: ["qmi-gms.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-gms.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-gms",
+         "--output $(genDir)/qmi-gms && " +
+         "rm -f $(genDir)/qmi-gms.h $(genDir)/qmi-gms.md",
 }
 
 genrule {
-    name: "gen_qmi_loc",
+    name: "gen_qmi_gms_h",
+    srcs: [
+        "data/qmi-service-gms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-gms.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-gms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-gms && " +
+         "rm -f $(genDir)/qmi-gms.c $(genDir)/qmi-gms.md",
+}
+
+genrule {
+    name: "gen_qmi_loc_c",
     srcs: [
         "data/qmi-service-loc.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-loc.c",
-        "qmi-loc.h",
-        "qmi-loc.md",
-    ],
+    out: ["qmi-loc.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-loc.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-loc",
+         "--output $(genDir)/qmi-loc && " +
+         "rm -f $(genDir)/qmi-loc.h $(genDir)/qmi-loc.md",
 }
 
 genrule {
-    name: "gen_qmi_nas",
+    name: "gen_qmi_loc_h",
+    srcs: [
+        "data/qmi-service-loc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-loc.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-loc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-loc && " +
+         "rm -f $(genDir)/qmi-loc.c $(genDir)/qmi-loc.md",
+}
+
+genrule {
+    name: "gen_qmi_nas_c",
     srcs: [
         "data/qmi-service-nas.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-nas.c",
-        "qmi-nas.h",
-        "qmi-nas.md",
-    ],
+    out: ["qmi-nas.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-nas.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-nas",
+         "--output $(genDir)/qmi-nas && " +
+         "rm -f $(genDir)/qmi-nas.h $(genDir)/qmi-nas.md",
 }
 
 genrule {
-    name: "gen_qmi_oma",
+    name: "gen_qmi_nas_h",
+    srcs: [
+        "data/qmi-service-nas.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-nas.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-nas.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-nas && " +
+         "rm -f $(genDir)/qmi-nas.c $(genDir)/qmi-nas.md",
+}
+
+genrule {
+    name: "gen_qmi_oma_c",
     srcs: [
         "data/qmi-service-oma.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-oma.c",
-        "qmi-oma.h",
-        "qmi-oma.md",
-    ],
+    out: ["qmi-oma.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-oma.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-oma",
+         "--output $(genDir)/qmi-oma && " +
+         "rm -f $(genDir)/qmi-oma.h $(genDir)/qmi-oma.md",
 }
 
 genrule {
-    name: "gen_qmi_pbm",
+    name: "gen_qmi_oma_h",
+    srcs: [
+        "data/qmi-service-oma.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-oma.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-oma.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-oma && " +
+         "rm -f $(genDir)/qmi-oma.c $(genDir)/qmi-oma.md",
+}
+
+genrule {
+    name: "gen_qmi_pbm_c",
     srcs: [
         "data/qmi-service-pbm.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-pbm.c",
-        "qmi-pbm.h",
-        "qmi-pbm.md",
-    ],
+    out: ["qmi-pbm.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-pbm.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-pbm",
+         "--output $(genDir)/qmi-pbm && " +
+         "rm -f $(genDir)/qmi-pbm.h $(genDir)/qmi-pbm.md",
 }
 
 genrule {
-    name: "gen_qmi_pdc",
+    name: "gen_qmi_pbm_h",
+    srcs: [
+        "data/qmi-service-pbm.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-pbm.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pbm.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pbm && " +
+         "rm -f $(genDir)/qmi-pbm.c $(genDir)/qmi-pbm.md",
+}
+
+genrule {
+    name: "gen_qmi_pdc_c",
     srcs: [
         "data/qmi-service-pdc.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-pdc.c",
-        "qmi-pdc.h",
-        "qmi-pdc.md",
-    ],
+    out: ["qmi-pdc.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-pdc.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-pdc",
+         "--output $(genDir)/qmi-pdc && " +
+         "rm -f $(genDir)/qmi-pdc.h $(genDir)/qmi-pdc.md",
 }
 
 genrule {
-    name: "gen_qmi_pds",
+    name: "gen_qmi_pdc_h",
+    srcs: [
+        "data/qmi-service-pdc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-pdc.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pdc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pdc && " +
+         "rm -f $(genDir)/qmi-pdc.c $(genDir)/qmi-pdc.md",
+}
+
+genrule {
+    name: "gen_qmi_pds_c",
     srcs: [
         "data/qmi-service-pds.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-pds.c",
-        "qmi-pds.h",
-        "qmi-pds.md",
-    ],
+    out: ["qmi-pds.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-pds.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-pds",
+         "--output $(genDir)/qmi-pds && " +
+         "rm -f $(genDir)/qmi-pds.h $(genDir)/qmi-pds.md",
 }
 
 genrule {
-    name: "gen_qmi_qos",
+    name: "gen_qmi_pds_h",
+    srcs: [
+        "data/qmi-service-pds.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-pds.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-pds.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-pds && " +
+         "rm -f $(genDir)/qmi-pds.c $(genDir)/qmi-pds.md",
+}
+
+genrule {
+    name: "gen_qmi_qos_c",
     srcs: [
         "data/qmi-service-qos.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-qos.c",
-        "qmi-qos.h",
-        "qmi-qos.md",
-    ],
+    out: ["qmi-qos.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-qos.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-qos",
+         "--output $(genDir)/qmi-qos && " +
+         "rm -f $(genDir)/qmi-qos.h $(genDir)/qmi-qos.md",
 }
 
 genrule {
-    name: "gen_qmi_sar",
+    name: "gen_qmi_qos_h",
+    srcs: [
+        "data/qmi-service-qos.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-qos.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-qos.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-qos && " +
+         "rm -f $(genDir)/qmi-qos.c $(genDir)/qmi-qos.md",
+}
+
+genrule {
+    name: "gen_qmi_sar_c",
     srcs: [
         "data/qmi-service-sar.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-sar.c",
-        "qmi-sar.h",
-        "qmi-sar.md",
-    ],
+    out: ["qmi-sar.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-sar.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-sar",
+         "--output $(genDir)/qmi-sar && " +
+         "rm -f $(genDir)/qmi-sar.h $(genDir)/qmi-sar.md",
 }
 
 genrule {
-    name: "gen_qmi_ssc",
+    name: "gen_qmi_sar_h",
+    srcs: [
+        "data/qmi-service-sar.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-sar.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-sar.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-sar && " +
+         "rm -f $(genDir)/qmi-sar.c $(genDir)/qmi-sar.md",
+}
+
+genrule {
+    name: "gen_qmi_ssc_c",
     srcs: [
         "data/qmi-service-ssc.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-ssc.c",
-        "qmi-ssc.h",
-        "qmi-ssc.md",
-    ],
+    out: ["qmi-ssc.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-ssc.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-ssc",
+         "--output $(genDir)/qmi-ssc && " +
+         "rm -f $(genDir)/qmi-ssc.h $(genDir)/qmi-ssc.md",
 }
 
 genrule {
-    name: "gen_qmi_uim",
+    name: "gen_qmi_ssc_h",
+    srcs: [
+        "data/qmi-service-ssc.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-ssc.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-ssc.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-ssc && " +
+         "rm -f $(genDir)/qmi-ssc.c $(genDir)/qmi-ssc.md",
+}
+
+genrule {
+    name: "gen_qmi_uim_c",
     srcs: [
         "data/qmi-service-uim.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-uim.c",
-        "qmi-uim.h",
-        "qmi-uim.md",
-    ],
+    out: ["qmi-uim.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-uim.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-uim",
+         "--output $(genDir)/qmi-uim && " +
+         "rm -f $(genDir)/qmi-uim.h $(genDir)/qmi-uim.md",
 }
 
 genrule {
-    name: "gen_qmi_voice",
+    name: "gen_qmi_uim_h",
+    srcs: [
+        "data/qmi-service-uim.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-uim.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-uim.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-uim && " +
+         "rm -f $(genDir)/qmi-uim.c $(genDir)/qmi-uim.md",
+}
+
+genrule {
+    name: "gen_qmi_voice_c",
     srcs: [
         "data/qmi-service-voice.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-voice.c",
-        "qmi-voice.h",
-        "qmi-voice.md",
-    ],
+    out: ["qmi-voice.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-voice.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-voice",
+         "--output $(genDir)/qmi-voice && " +
+         "rm -f $(genDir)/qmi-voice.h $(genDir)/qmi-voice.md",
 }
 
 genrule {
-    name: "gen_qmi_wda",
+    name: "gen_qmi_voice_h",
+    srcs: [
+        "data/qmi-service-voice.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-voice.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-voice.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-voice && " +
+         "rm -f $(genDir)/qmi-voice.c $(genDir)/qmi-voice.md",
+}
+
+genrule {
+    name: "gen_qmi_wda_c",
     srcs: [
         "data/qmi-service-wda.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-wda.c",
-        "qmi-wda.h",
-        "qmi-wda.md",
-    ],
+    out: ["qmi-wda.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-wda.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-wda",
+         "--output $(genDir)/qmi-wda && " +
+         "rm -f $(genDir)/qmi-wda.h $(genDir)/qmi-wda.md",
 }
 
 genrule {
-    name: "gen_qmi_wds",
+    name: "gen_qmi_wda_h",
+    srcs: [
+        "data/qmi-service-wda.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-wda.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wda.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wda && " +
+         "rm -f $(genDir)/qmi-wda.c $(genDir)/qmi-wda.md",
+}
+
+genrule {
+    name: "gen_qmi_wds_c",
     srcs: [
         "data/qmi-service-wds.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-wds.c",
-        "qmi-wds.h",
-        "qmi-wds.md",
-    ],
+    out: ["qmi-wds.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-wds.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-wds",
+         "--output $(genDir)/qmi-wds && " +
+         "rm -f $(genDir)/qmi-wds.h $(genDir)/qmi-wds.md",
 }
 
 genrule {
-    name: "gen_qmi_wms",
+    name: "gen_qmi_wds_h",
+    srcs: [
+        "data/qmi-service-wds.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-wds.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wds.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wds && " +
+         "rm -f $(genDir)/qmi-wds.c $(genDir)/qmi-wds.md",
+}
+
+genrule {
+    name: "gen_qmi_wms_c",
     srcs: [
         "data/qmi-service-wms.json",
         "data/qmi-common.json",
     ],
     tool_files: codegen_tool_files,
-    out: [
-        "qmi-wms.c",
-        "qmi-wms.h",
-        "qmi-wms.md",
-    ],
+    out: ["qmi-wms.c"],
     cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
          "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
          "--input $(location data/qmi-service-wms.json) " +
          "--include $(location data/qmi-common.json) " +
-         "--output $(genDir)/qmi-wms",
+         "--output $(genDir)/qmi-wms && " +
+         "rm -f $(genDir)/qmi-wms.h $(genDir)/qmi-wms.md",
+}
+
+genrule {
+    name: "gen_qmi_wms_h",
+    srcs: [
+        "data/qmi-service-wms.json",
+        "data/qmi-common.json",
+    ],
+    tool_files: codegen_tool_files,
+    out: ["qmi-wms.h"],
+    cmd: "PYTHONPATH=$$(dirname $(location build-aux/qmi-codegen/qmi-codegen)) " +
+         "python3 $(location build-aux/qmi-codegen/qmi-codegen) " +
+         "--input $(location data/qmi-service-wms.json) " +
+         "--include $(location data/qmi-common.json) " +
+         "--output $(genDir)/qmi-wms && " +
+         "rm -f $(genDir)/qmi-wms.c $(genDir)/qmi-wms.md",
 }
