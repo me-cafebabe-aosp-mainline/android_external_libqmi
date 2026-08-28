@@ -26,11 +26,11 @@ codegen_tool_files = [
 
 genrule {
     name: "gen_qmi_error_types_h",
-    srcs: [":qmi_errors_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_errors_header",
         "build-aux/templates/qmi-error-types.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-error-types.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--fhead '#ifndef __LIBQMI_GLIB_ERROR_TYPES_H__\\n" +
@@ -43,11 +43,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_error_types_c",
-    srcs: [":qmi_errors_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_errors_header",
         "build-aux/templates/qmi-error-types.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-error-types.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--fhead '#include \"qmi-errors.h\"\\n" +
@@ -58,11 +58,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_error_quarks_c",
-    srcs: [":qmi_errors_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_errors_header",
         "build-aux/templates/qmi-error-quarks.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-error-quarks.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--fhead '#include \"qmi-errors.h\"\\n" +
@@ -73,11 +73,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_enum_types_h",
-    srcs: [":qmi_enums_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_headers",
         "build-aux/templates/qmi-enum-types.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--enums-only " +
@@ -114,11 +114,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_enum_types_c",
-    srcs: [":qmi_enums_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_headers",
         "build-aux/templates/qmi-enum-types.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--enums-only " +
@@ -129,11 +129,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flag_types_h",
-    srcs: [":qmi_enums_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_headers",
         "build-aux/templates/qmi-flag-types.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--flags-only " +
@@ -166,11 +166,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flag_types_c",
-    srcs: [":qmi_enums_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_headers",
         "build-aux/templates/qmi-flag-types.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--flags-only " +
@@ -181,11 +181,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_enum_types_private_h",
-    srcs: [":qmi_enums_private_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_private_header",
         "build-aux/templates/qmi-enum-types-private.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types-private.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--enums-only " +
@@ -199,11 +199,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_enum_types_private_c",
-    srcs: [":qmi_enums_private_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_private_header",
         "build-aux/templates/qmi-enum-types-private.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-enum-types-private.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--enums-only " +
@@ -214,11 +214,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flag_types_private_h",
-    srcs: [":qmi_enums_private_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_private_header",
         "build-aux/templates/qmi-flag-types-private.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types-private.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--flags-only " +
@@ -232,11 +232,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flag_types_private_c",
-    srcs: [":qmi_enums_private_header"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_enums_private_header",
         "build-aux/templates/qmi-flag-types-private.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flag-types-private.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--flags-only " +
@@ -247,11 +247,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flags64_types_h",
-    srcs: [":qmi_flags64_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_flags64_headers",
         "build-aux/templates/qmi-flags64-types.h.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flags64-types.h"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--fhead '#ifndef __LIBQMI_GLIB_FLAGS64_TYPES_H__\\n" +
@@ -268,11 +268,11 @@ genrule {
 
 genrule {
     name: "gen_qmi_flags64_types_c",
-    srcs: [":qmi_flags64_headers"],
-    tool_files: [
-        "build-aux/qmi-mkenums",
+    srcs: [
+        ":qmi_flags64_headers",
         "build-aux/templates/qmi-flags64-types.c.template",
     ],
+    tool_files: ["build-aux/qmi-mkenums"],
     out: ["qmi-flags64-types.c"],
     cmd: "python3 $(location build-aux/qmi-mkenums) " +
          "--fhead '#include \"qmi-flags64-types.h\"\\n' " +
