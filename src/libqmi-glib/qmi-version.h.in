@@ -109,7 +109,9 @@
  *
  * Since: 1.26
  */
+#ifndef QMI_QRTR_SUPPORTED
 #define QMI_QRTR_SUPPORTED @QMI_QRTR_SUPPORTED@
+#endif
 
 /**
  * QMI_RMNET_SUPPORTED:
