@@ -2,58 +2,87 @@
 // Copyright (C) 2019 - 2021 Iñigo Martinez <inigomartinez@gmail.com>
 
 // ---------------------------------------------------------------------------
+// Header lists on libqmi-glib/meson.build
+// ---------------------------------------------------------------------------
+
+cc_library_headers {
+    name: "libqmi_libqmi_glib_headers",
+    export_include_dirs: [
+        ".",
+    ],
+    vendor_available: true,
+}
+
+qmi_errors_header = ["qmi-errors.h"]
+
+qmi_enums_headers = [
+    "qmi-device.h",
+    "qmi-enums.h",
+    "qmi-enums-dms.h",
+    "qmi-enums-dsd.h",
+    "qmi-enums-fox.h",
+    "qmi-enums-gas.h",
+    "qmi-enums-ims.h",
+    "qmi-enums-imsa.h",
+    "qmi-enums-imsp.h",
+    "qmi-enums-imsdcm.h",
+    "qmi-enums-loc.h",
+    "qmi-enums-nas.h",
+    "qmi-enums-oma.h",
+    "qmi-enums-pbm.h",
+    "qmi-enums-pdc.h",
+    "qmi-enums-pds.h",
+    "qmi-enums-qos.h",
+    "qmi-enums-sar.h",
+    "qmi-enums-uim.h",
+    "qmi-enums-voice.h",
+    "qmi-enums-wda.h",
+    "qmi-enums-wds.h",
+    "qmi-enums-wms.h",
+    "qmi-enums-ssc.h",
+]
+
+qmi_enums_private_header = ["qmi-enums-private.h"]
+
+qmi_flags64_headers = [
+    "qmi-flags64-dms.h",
+    "qmi-flags64-dsd.h",
+    "qmi-flags64-loc.h",
+    "qmi-flags64-nas.h",
+    "qmi-flags64-wds.h",
+]
+
+headers = qmi_errors_header + qmi_enums_headers + qmi_enums_private_header + qmi_flags64_headers + [
+    "libqmi-glib.h",
+    "qmi-client.h",
+    "qmi-message-context.h",
+    "qmi-message.h",
+    "qmi-proxy.h",
+    "qmi-utils.h",
+]
+
+// ---------------------------------------------------------------------------
 // Filegroups for input headers used by qmi-mkenums genrules (in Android.gen.bp)
 // ---------------------------------------------------------------------------
 
 filegroup {
     name: "qmi_errors_header",
-    srcs: ["qmi-errors.h"],
+    srcs: qmi_errors_header,
 }
 
 filegroup {
     name: "qmi_enums_headers",
-    srcs: [
-        "qmi-device.h",
-        "qmi-enums.h",
-        "qmi-enums-dms.h",
-        "qmi-enums-dsd.h",
-        "qmi-enums-fox.h",
-        "qmi-enums-gas.h",
-        "qmi-enums-ims.h",
-        "qmi-enums-imsa.h",
-        "qmi-enums-imsp.h",
-        "qmi-enums-imsdcm.h",
-        "qmi-enums-loc.h",
-        "qmi-enums-nas.h",
-        "qmi-enums-oma.h",
-        "qmi-enums-pbm.h",
-        "qmi-enums-pdc.h",
-        "qmi-enums-pds.h",
-        "qmi-enums-qos.h",
-        "qmi-enums-sar.h",
-        "qmi-enums-uim.h",
-        "qmi-enums-voice.h",
-        "qmi-enums-wda.h",
-        "qmi-enums-wds.h",
-        "qmi-enums-wms.h",
-        "qmi-enums-ssc.h",
-    ],
+    srcs: qmi_enums_headers,
 }
 
 filegroup {
     name: "qmi_enums_private_header",
-    srcs: ["qmi-enums-private.h"],
+    srcs: qmi_enums_private_header,
 }
 
 filegroup {
     name: "qmi_flags64_headers",
-    srcs: [
-        "qmi-flags64-dms.h",
-        "qmi-flags64-dsd.h",
-        "qmi-flags64-loc.h",
-        "qmi-flags64-nas.h",
-        "qmi-flags64-wds.h",
-    ],
+    srcs: qmi_flags64_headers,
 }
 
 // ---------------------------------------------------------------------------
@@ -69,7 +98,7 @@ genrule {
          "-e 's|@QMI_MINOR_VERSION@|39|g' " +
          "-e 's|@QMI_MICRO_VERSION@|1|g' " +
          "-e 's|@QMI_MBIM_QMUX_SUPPORTED@|0|g' " +
-         "-e 's|@QMI_QRTR_SUPPORTED@|0|g' " +
+         "-e 's|@QMI_QRTR_SUPPORTED@|1|g' " +
          "-e 's|@QMI_RMNET_SUPPORTED@|1|g' " +
          "$(in) > $(out)",
 }
@@ -78,15 +107,14 @@ genrule {
 // Generated file lists
 // ---------------------------------------------------------------------------
 
-all_generated_sources = [
+gen_sources = [
     "gen_qmi_error_types_c",
     "gen_qmi_error_quarks_c",
     "gen_qmi_enum_types_c",
     "gen_qmi_flag_types_c",
-    "gen_qmi_enum_types_private_c",
-    "gen_qmi_flag_types_private_c",
     "gen_qmi_flags64_types_c",
-    "gen_qmi_ctl_c",
+] + [
+    // services
     "gen_qmi_atr_c",
     "gen_qmi_dms_c",
     "gen_qmi_dpm_c",
@@ -114,15 +142,22 @@ all_generated_sources = [
     "gen_qmi_wms_c",
 ]
 
-all_generated_headers = [
-    "gen_qmi_version_h",
+private_gen_sources = [
+    "gen_qmi_enum_types_private_c",
+    "gen_qmi_flag_types_private_c",
+] + ["gen_qmi_ctl_c"]
+
+all_generated_sources = gen_sources + private_gen_sources
+
+version_header = ["gen_qmi_version_h"]
+
+gen_headers = [
     "gen_qmi_error_types_h",
     "gen_qmi_enum_types_h",
     "gen_qmi_flag_types_h",
-    "gen_qmi_enum_types_private_h",
-    "gen_qmi_flag_types_private_h",
     "gen_qmi_flags64_types_h",
-    "gen_qmi_ctl_h",
+] + [
+    // services
     "gen_qmi_atr_h",
     "gen_qmi_dms_h",
     "gen_qmi_dpm_h",
@@ -150,37 +185,77 @@ all_generated_headers = [
     "gen_qmi_wms_h",
 ]
 
-public_generated_headers = [
-    "gen_qmi_version_h",
-    "gen_qmi_error_types_h",
-    "gen_qmi_enum_types_h",
-    "gen_qmi_flag_types_h",
-    "gen_qmi_flags64_types_h",
-    "gen_qmi_atr_h",
-    "gen_qmi_dms_h",
-    "gen_qmi_dpm_h",
-    "gen_qmi_dsd_h",
-    "gen_qmi_ims_h",
-    "gen_qmi_imsa_h",
-    "gen_qmi_imsp_h",
-    "gen_qmi_imsdcm_h",
-    "gen_qmi_fox_h",
-    "gen_qmi_gas_h",
-    "gen_qmi_gms_h",
-    "gen_qmi_loc_h",
-    "gen_qmi_nas_h",
-    "gen_qmi_oma_h",
-    "gen_qmi_pbm_h",
-    "gen_qmi_pdc_h",
-    "gen_qmi_pds_h",
-    "gen_qmi_qos_h",
-    "gen_qmi_sar_h",
-    "gen_qmi_ssc_h",
-    "gen_qmi_uim_h",
-    "gen_qmi_voice_h",
-    "gen_qmi_wda_h",
-    "gen_qmi_wds_h",
-    "gen_qmi_wms_h",
+private_gen_headers = [
+    "gen_qmi_enum_types_private_h",
+    "gen_qmi_flag_types_private_h",
+] + ["gen_qmi_ctl_h"]
+
+// ---------------------------------------------------------------------------
+// Other declarations on libqmi-glib/generated/meson.build
+// ---------------------------------------------------------------------------
+
+generated_header_libs = [
+    "libqmi_top_headers",
+    "libqmi_libqmi_glib_headers",
+]
+
+generated_cflags = [
+    "-DLIBQMI_GLIB_COMPILATION",
+    "-DG_LOG_DOMAIN=\"Qmi\"",
+    "-Wno-deprecated-declarations",
+]
+
+cc_defaults {
+    name: "libqmi_libqmi-glib_generated_deps_defaults",
+    defaults: [
+        "libqmi_common_dep_defaults",
+        "libqmi_glib_deps_defaults",
+    ],
+    // Actually the qrtr_glib_dep on root meson.build
+    shared_libs: ["libqrtr-glib"],
+}
+
+// ---------------------------------------------------------------------------
+// Generated code (mkenums + codegen outputs)
+// ---------------------------------------------------------------------------
+
+cc_library_static {
+    name: "libqmi-glib-generated",
+    defaults: [
+        "libqmi_defaults",
+        "libqmi_libqmi-glib_generated_deps_defaults",
+    ],
+    generated_sources: private_gen_sources + gen_sources,
+    generated_headers: private_gen_headers + gen_headers + version_header,
+    export_generated_headers: private_gen_headers + gen_headers + version_header,
+    cflags: generated_cflags,
+    header_libs: generated_header_libs,
+    export_header_lib_headers: generated_header_libs,
+}
+
+cc_defaults {
+    name: "libqmi_libqmi-glib_generated_generated_dep_defaults",
+    defaults: [
+        "libqmi_libqmi-glib_generated_deps_defaults",
+    ],
+    generated_headers: private_gen_headers + gen_headers + version_header,
+    export_generated_headers: private_gen_headers + gen_headers + version_header,
+    header_libs: [
+        "libqmi_libqmi_glib_headers",
+        // meson.build also have generated_inc, but maybe that's already handled
+    ],
+    export_header_lib_headers: [
+        "libqmi_libqmi_glib_headers",
+    ],
+}
+
+// ---------------------------------------------------------------------------
+// Other declarations on libqmi-glib/meson.build
+// ---------------------------------------------------------------------------
+
+common_c_flags = [
+    "-DLIBQMI_GLIB_COMPILATION",
+    "-DG_LOG_DOMAIN=\"Qmi\"",
 ]
 
 // ---------------------------------------------------------------------------
@@ -190,47 +265,27 @@ public_generated_headers = [
 cc_library_static {
     name: "libqmi-glib-compat",
     defaults: [
-        "libqmi_common_dep_defaults",
+        "libqmi_defaults",
+        "libqmi_libqmi-glib_generated_generated_dep_defaults",
     ],
     srcs: ["qmi-compat.c"],
-    cflags: [
-        "-DLIBQMI_GLIB_COMPILATION",
-        "-DG_LOG_DOMAIN=\"Qmi\"",
+    cflags: common_c_flags + [
         "-Wno-deprecated-declarations",
         "-UQMI_DISABLE_DEPRECATED",
     ],
-    local_include_dirs: ["."],
     header_libs: ["libqmi_top_headers"],
-    generated_headers: all_generated_headers,
+    export_header_lib_headers: ["libqmi_top_headers"],
 }
 
 // ---------------------------------------------------------------------------
-// Static library: generated code (mkenums + codegen outputs)
+// Library: libqmi-glib
 // ---------------------------------------------------------------------------
 
-cc_library_static {
-    name: "libqmi-glib-generated",
-    defaults: [
-        "libqmi_common_dep_defaults",
-    ],
-    generated_sources: all_generated_sources,
-    generated_headers: all_generated_headers,
-    cflags: [
-        "-DLIBQMI_GLIB_COMPILATION",
-        "-DG_LOG_DOMAIN=\"Qmi\"",
-        "-Wno-unused-function",
-    ],
-    local_include_dirs: ["."],
-    header_libs: ["libqmi_top_headers"],
-}
-
-// ---------------------------------------------------------------------------
-// Shared library: libqmi-glib
-// ---------------------------------------------------------------------------
-
-cc_library_shared {
+cc_library {
     name: "libqmi-glib",
     defaults: [
+        "libqmi_defaults",
+        "libqmi_libqmi-glib_generated_generated_dep_defaults",
         "libqmi_common_dep_defaults",
     ],
     srcs: [
@@ -238,6 +293,7 @@ cc_library_shared {
         "qmi-device.c",
         "qmi-endpoint.c",
         "qmi-endpoint-qmux.c",
+        "qmi-endpoint-qrtr.c",
         "qmi-enums-dms.c",
         "qmi-enums-nas.c",
         "qmi-enums-wds.c",
@@ -251,19 +307,27 @@ cc_library_shared {
         "qmi-proxy.c",
         "qmi-utils.c",
     ],
+    generated_headers: version_header,
+    export_generated_headers: version_header,
+    header_libs: ["libqmi_top_headers"],
+    export_header_lib_headers: ["libqmi_top_headers"],
+    cflags: common_c_flags + [
+        "-DLIBEXEC_PATH=\"/vendor/bin\"",
+    ],
     whole_static_libs: [
         "libqmi-glib-compat",
         "libqmi-glib-generated",
     ],
-    cflags: [
-        "-DLIBQMI_GLIB_COMPILATION",
-        "-DG_LOG_DOMAIN=\"Qmi\"",
-        "-DLIBEXEC_PATH=\"/vendor/bin\"",
+}
+
+// ---------------------------------------------------------------------------
+// libqmi_glib_dep
+// ---------------------------------------------------------------------------
+
+cc_defaults {
+    name: "libqmi_libqmi_glib_dep_defaults",
+    defaults: [
+        "libqmi_libqmi-glib_generated_generated_dep_defaults",
     ],
-    generated_headers: all_generated_headers,
-    local_include_dirs: ["."],
-    header_libs: ["libqmi_top_headers"],
-    export_include_dirs: ["."],
-    export_generated_headers: public_generated_headers,
-    vendor_available: true,
+    shared_libs: ["libqmi-glib"],
 }
